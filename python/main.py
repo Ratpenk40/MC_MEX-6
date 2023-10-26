@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 import module_2Dplotter as plotter2D
 import module_2Dplotter_PLK1 as plotter2DPLK1
+import module_2Dplotter_MEX6 as plotter2DMEX6
 from datetime import datetime
 
 
@@ -221,8 +222,10 @@ def main(argv):
     log.writeLine("v slow mex6 " + str(v_mex6_slow))
     log.writeLine("v plk1 " + str(v_plk1))
     log.writeLine("plk1_to_mex5 " + str(plk1_to_mex5))
-    log.writeLine("initial_slow " + str(initial_slow))
-    log.writeLine("initial_fast " + str(initial_fast))
+    log.writeLine("initial_slow_mex5 " + str(initial_slow_mex5))
+    log.writeLine("initial_fast_mex5 " + str(initial_fast_mex5))
+    log.writeLine("initial_slow_mex6 " + str(initial_slow_mex6))
+    log.writeLine("initial_fast_mex6 " + str(initial_fast_mex6))
     log.writeLine("k_fast_slow_mex5" + str(k_fast_slow_mex5))
     log.writeLine("k_slow_fast_low_mex5" + str(k_slow_fast_low_mex5))
     log.writeLine("k_slow_fast_high_mex5" + str(k_slow_fast_high_mex5))
@@ -334,14 +337,24 @@ def main(argv):
         particle_family_plk1 = pm_plk1.particle3D_managerPLK1(particles)
 
     particle_family.SetSettings(
-        initial_slow,
-        initial_fast,
+        initial_slow_mex5,
+        initial_fast_mex5,
         k_fast_slow_mex5,
         k_slow_fast_low_mex5,
         k_slow_fast_high_mex5,
     )
 
     particle_family.Shuffle(limits_particle)
+
+    if mex6:
+        particle_family_mex6.SetSettings(
+            initial_slow_mex6,
+            initial_fast_mex6,
+            k_fast_slow_mex6,
+            k_slow_fast_low_mex6,
+            k_slow_fast_high_mex6,
+        )
+        particle_family_mex6.Shuffle(limits_particle)
 
     if plk1:
         particle_family_plk1.SetSettings(
@@ -361,6 +374,11 @@ def main(argv):
         particles, limits3, limits, v_mex5_slow, v_mex5_fast, "logs/" + date_time
     )
 
+    if mex6:
+        plots_mex6 = plotter2DMEX6.Plot2D(
+            particles, limits3, limits, v_mex6_slow, v_mex6_fast, "logs/" + date_time
+        )
+
     if plk1:
         plots_plk1 = plotter2DPLK1.Plot2D(
             particles,
@@ -377,16 +395,21 @@ def main(argv):
     X_list = list(particle_family.GetXpos())
     Y_list = list(particle_family.GetYpos())
     Z_list = list(particle_family.GetZpos())
-
     plots.UpdateCpp(X_list, Y_list, Z_list, sliced, slice_depth)
 
-    if plk1:
+    if mex6:
+        X_list_mex6 = list(particle_family_mex6.GetXpos())
+        Y_list_mex6 = list(particle_family_mex6.GetYpos())
+        Z_list_mex6 = list(particle_family_mex6.GetZpos())
+        plots_mex6.UpdateCpp(X_list_mex6, Y_list_mex6, Z_list_mex6, sliced, slice_depth)
+
+    if plk1:  # i think it should be particle_family_plk1
         X_list = list(particle_family.GetXpos())
         Y_list = list(particle_family.GetYpos())
         Z_list = list(particle_family.GetZpos())
         plots_plk1.UpdateCpp(X_list, Y_list, Z_list, sliced, slice_depth)
 
-    for i in range(0, 2100):
+    for i in range(0, 1500):
         print("starting evt" + str(datetime.now().time()))  # time object
 
         particle_family.Move(v_mex5_slow, v_mex5_fast, 1, limits_particle, bound, i)
@@ -395,12 +418,28 @@ def main(argv):
         Y_list = list(particle_family.GetYpos())
         Z_list = list(particle_family.GetZpos())
         ID_list = list(particle_family.GetID())
+
+        # concid0 = mex_5 slow; concid1 = mex_5 fast
         ratio, concid0, concid1, vel = plots.conc_calcCpp(
             X_list, Y_list, Z_list, ID_list
         )
 
         concid0 = (np.array(concid0) * plk1_to_mex_multiplicator).tolist()
         concid1 = (np.array(concid1) * plk1_to_mex_multiplicator).tolist()
+
+        if mex6:
+            particle_family_mex6.Move(
+                v_mex6_slow, v_mex6_fast, 1, limits_particle, bound, i
+            )
+
+            X_list_mex6 = list(particle_family_mex6.GetXpos())
+            Y_list_mex6 = list(particle_family_mex6.GetYpos())
+            Z_list_mex6 = list(particle_family_mex6.GetZpos())
+            ID_list_mex6 = list(particle_family_mex6.GetID())
+
+            ratio_mex6, concid0_mex6, concid1_mex6, vel_mex6 = plots_mex6.conc_calcCpp(
+                X_list, Y_list_mex6, Z_list_mex6, ID_list_mex6
+            )
 
         if plk1:
             particle_family_plk1.Move(
@@ -421,14 +460,16 @@ def main(argv):
             X_list_plk1 = list(particle_family_plk1.GetXpos())
             Y_list_plk1 = list(particle_family_plk1.GetYpos())
             Z_list_plk1 = list(particle_family_plk1.GetZpos())
-
             ID_list_plk1 = list(particle_family_plk1.GetID())
+
             conc1, conc2, conc3, v_plk1_average = plots_plk1.conc_calcCpp(
                 X_list_plk1, Y_list_plk1, Z_list_plk1, ID_list_plk1
             )
 
         if i != 0 and i % 10 == 0:
-            X_list = list(particle_family.GetXpos())
+            X_list = list(
+                particle_family.GetXpos()
+            )  # this can be removed I think because declared before
             Y_list = list(particle_family.GetYpos())
             Z_list = list(particle_family.GetZpos())
             plots.UpdateCpp(X_list, Y_list, Z_list, sliced, slice_depth)
@@ -458,6 +499,30 @@ def main(argv):
 
             log_conc_id0_mex5.closeFile()
             log_conc_id1_mex5.closeFile()
+
+            if mex6:
+                log_k_mex6.log_open_append()
+                log_profile_mex6.log_open_append()
+                log_mex6_ratio_slow_fast.log_open_append()
+                log_v_mex6.log_open_append()
+                log_conc_id0_mex6.log_open_append()
+                log_conc_id1_mex6.log_open_append()
+
+                log_k_mex6.writeLine(str(plots_mex6.klast))
+                log_profile_mex6.writeListRow(plots_mex6.profilelast)
+                log_mex6_ratio_slow_fast.writeListRow(ratio_mex6)
+                log_v_mex6.writeListRow(vel_mex6)
+
+                log_conc_id0_mex6.writeListRow(concid0_mex6)
+                log_conc_id1_mex6.writeListRow(concid1_mex6)
+
+                log_k_mex6.closeFile()
+                log_profile_mex6.closeFile()
+                log_mex6_ratio_slow_fast.closeFile()
+                log_v_mex6.closeFile()
+
+                log_conc_id0_mex6.closeFile()
+                log_conc_id1_mex6.closeFile()
 
             if plk1:
                 log_k_plk1.log_open_append()
