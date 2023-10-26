@@ -20,7 +20,7 @@ particle3D_managerMEX6::particle3D_managerMEX6(int particles){
 
     for(unsigned int i=0; i<particles;  i++ ){
         
-        list_of_particles.push_back(new particle3D(&gen));
+        list_of_particles.push_back(new particleMEX63D(&gen));
         
     }
 
@@ -174,7 +174,7 @@ void particle3D_managerMEX6::SetSettings(float initial_slow, float initial_fast,
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(particle3D_managerMEX6MEX6)
+BOOST_PYTHON_MODULE(particle3D_managerMEX6)
 {
    
 

@@ -124,6 +124,7 @@ def main(argv):
             [
                 "particles=",
                 "bound",
+                "mex6",
                 "plk1",
                 "threeD",
                 "slice",
@@ -210,6 +211,7 @@ def main(argv):
     log.writeLine("Starting simulation ")
     log.writeLine("N. particles " + str(particles))
     log.writeLine("bound " + str(bound))
+    log.writeLine("mex6 " + str(mex6))
     log.writeLine("plk1 " + str(plk1))
     log.writeLine("threeD " + str(threeD))
     log.writeLine("slice " + str(sliced))
@@ -226,11 +228,11 @@ def main(argv):
     log.writeLine("initial_fast_mex5 " + str(initial_fast_mex5))
     log.writeLine("initial_slow_mex6 " + str(initial_slow_mex6))
     log.writeLine("initial_fast_mex6 " + str(initial_fast_mex6))
-    log.writeLine("k_fast_slow_mex5" + str(k_fast_slow_mex5))
-    log.writeLine("k_slow_fast_low_mex5" + str(k_slow_fast_low_mex5))
-    log.writeLine("k_slow_fast_high_mex5" + str(k_slow_fast_high_mex5))
-    log.writeLine("k_fast_slow_mex6" + str(k_fast_slow_mex6))
-    log.writeLine("k_slow_fast_low_mex6" + str(k_slow_fast_low_mex6))
+    log.writeLine("k_fast_slow_mex5 " + str(k_fast_slow_mex5))
+    log.writeLine("k_slow_fast_low_mex5 " + str(k_slow_fast_low_mex5))
+    log.writeLine("k_slow_fast_high_mex5 " + str(k_slow_fast_high_mex5))
+    log.writeLine("k_fast_slow_mex6 " + str(k_fast_slow_mex6))
+    log.writeLine("k_slow_fast_low_mex6 " + str(k_slow_fast_low_mex6))
     log.writeLine("k_slow_fast_high_mex6" + str(k_slow_fast_high_mex6))
     log.writeLine("k_plk1_attach_to_free " + str(k_plk1_attach_to_free))
     log.writeLine("plk1_attach_to_mex_fast " + str(plk1_attach_to_mex_fast))
@@ -258,7 +260,7 @@ def main(argv):
     log.writeLine("log conc id0 plk1 " + str(file_log_conc_id0_plk1))
     log.writeLine("log conc id1 plk1 " + str(file_log_conc_id1_plk1))
     log.writeLine("log conc id2 plk1" + str(file_log_conc_id2_plk1))
-    log.close()
+    log.closeFile()
 
     # Limits of the embryo
     limits_particle = []
@@ -288,12 +290,12 @@ def main(argv):
     log_conc_id0_mex5 = eloG(file_log_conc_id0_mex5)
     log_conc_id1_mex5 = eloG(file_log_conc_id1_mex5)
 
-    log_k_mex5.close()
-    log_profile_mex5.close()
-    log_mex5_ratio_slow_fast.close()
-    log_v_mex5.close()
-    log_conc_id0_mex5.close()
-    log_conc_id1_mex5.close()
+    log_k_mex5.closeFile()
+    log_profile_mex5.closeFile()
+    log_mex5_ratio_slow_fast.closeFile()
+    log_v_mex5.closeFile()
+    log_conc_id0_mex5.closeFile()
+    log_conc_id1_mex5.closeFile()
 
     # creating MEX-6 output files
     if mex6:
@@ -304,12 +306,12 @@ def main(argv):
         log_conc_id0_mex6 = eloG(file_log_conc_id0_mex6)
         log_conc_id1_mex6 = eloG(file_log_conc_id1_mex6)
 
-        log_k_mex6.close()
-        log_profile_mex6.close()
-        log_mex6_ratio_slow_fast.close()
-        log_v_mex6.close()
-        log_conc_id0_mex6.close()
-        log_conc_id1_mex6.close()
+        log_k_mex6.closeFile()
+        log_profile_mex6.closeFile()
+        log_mex6_ratio_slow_fast.closeFile()
+        log_v_mex6.closeFile()
+        log_conc_id0_mex6.closeFile()
+        log_conc_id1_mex6.closeFile()
 
     # creating PLK-1 output files
     if plk1:
@@ -320,12 +322,12 @@ def main(argv):
         log_conc_id1_plk1 = eloG(file_log_conc_id1_plk1)
         log_conc_id2_plk1 = eloG(file_log_conc_id2_plk1)
 
-        log_profile_plk1.close()
-        log_k_plk1.close()
-        log_v_plk1.close()
-        log_conc_id0_plk1.close()
-        log_conc_id1_plk1.close()
-        log_conc_id2_plk1.close()
+        log_profile_plk1.closeFile()
+        log_k_plk1.closeFile()
+        log_v_plk1.closeFile()
+        log_conc_id0_plk1.closeFile()
+        log_conc_id1_plk1.closeFile()
+        log_conc_id2_plk1.closeFile()
 
     # Fill the particle list
     particle_family = pm.particle3D_manager(particles)

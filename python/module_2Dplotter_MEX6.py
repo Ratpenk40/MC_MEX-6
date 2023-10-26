@@ -25,10 +25,6 @@ class Plot2D:
         self.counter = 0  # track the iteration it is on
         self.path = path
 
-        os.mkdir(
-            os.path.join(self.path, "Graphs")
-        )  # creating the directory to store the graphs
-
         global fig, fig1, fig2, fig_id1, fig_id2, fig_id_ratio, fig_root_based, fig_movie
         fig = plt.figure()
         fig_id1 = plt.figure(figsize=[6, 8])
