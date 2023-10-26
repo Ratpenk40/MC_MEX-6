@@ -1,6 +1,6 @@
 INCLUDE_DIRECTORIES(../include)
 PYTHON_ADD_MODULE(particle3D_manager particle3D.cpp particle_manager.cpp)
-PYTHON_ADD_MODULE(particle3D_managerMEX6 particleMEX6.cpp particle_managerMEX6.cpp)
+PYTHON_ADD_MODULE(particle3D_managerMEX6 particleMEX63D.cpp particle_managerMEX6.cpp)
 PYTHON_ADD_MODULE(particle3D_managerPLK1 particlePLK13D.cpp particle_managerPLK1.cpp)
 
 install(TARGETS particle3D_manager LIBRARY DESTINATION .)
