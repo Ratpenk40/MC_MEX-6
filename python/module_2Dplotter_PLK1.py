@@ -367,11 +367,10 @@ class Plot2D:
         fig_id_ratio.tight_layout()
         fig_id_ratio.canvas.draw()
 
-        if self.counter % autosave == 0:
-            plt.imsave(
-                os.path.join(self.path, f"Graphs/PLK-1-PlotB_t-{self.counter}.png"),
-                np.array(fig_id_ratio.canvas.renderer.buffer_rgba()),
-            )
+        # if self.counter % autosave == 0:
+        # plt.imsave(os.path.join(self.path, f"Graphs/PLK-1-PlotB_t-{self.counter}.png"),
+        #   np.array(fig_id_ratio.canvas.renderer.buffer_rgba()),
+        # )
 
         # plt.show(block=False)
         # plt.pause(0.1)

@@ -13,7 +13,7 @@ y_values = [point1[1], point2[1]]
 
 
 class Plot2D:
-    def __init__(self, number, limits, limits_spheroid, v_mex5_slow, v_mex5_fast, path):
+    def __init__(self, number, limits, limits_spheroid, v_mex6_slow, v_mex6_fast, path):
         self.klast = 0.0
         self.profilelast = []
         self.x = [0] * number
@@ -40,8 +40,8 @@ class Plot2D:
         self.data_movie_2 = []
 
         #   ROOT Stuff
-        self.v_slow = v_mex5_slow
-        self.v_fast = v_mex5_fast
+        self.v_slow = v_mex6_slow
+        self.v_fast = v_mex6_fast
 
     def Update(self, particles, sliceD, slice_depth):
         del self.x[:]
@@ -278,14 +278,14 @@ class Plot2D:
         )
         ax_id_slice.legend(loc="upper right", frameon=False)
 
-        mex5_slow = np.array(id0_slice) / self.number
-        mex5_fast = np.array(id1_slice) / self.number
-        mex5_tot = mex5_slow + mex5_fast
+        mex6_slow = np.array(id0_slice) / self.number
+        mex6_fast = np.array(id1_slice) / self.number
+        mex6_tot = mex6_slow + mex6_fast
 
         ax_id_slice_conc = fig_id_ratio.add_subplot(3, 2, 5)
-        ax_id_slice_conc.plot(xbins_line, mex5_tot, "g", label="Tot. concentr.")
-        ax_id_slice_conc.plot(xbins_line, mex5_slow, "r", label="MEX-6s")
-        ax_id_slice_conc.plot(xbins_line, mex5_fast, "b", label="MEX-65f")
+        ax_id_slice_conc.plot(xbins_line, mex6_tot, "g", label="Tot. concentr.")
+        ax_id_slice_conc.plot(xbins_line, mex6_slow, "r", label="MEX-6s")
+        ax_id_slice_conc.plot(xbins_line, mex6_fast, "b", label="MEX-65f")
         ax_id_slice_conc.set(
             title="MEX-6 concentrat., integrat. on Z",
             ylabel="Conc. MEX-6s + MEX-6f",
@@ -347,13 +347,13 @@ class Plot2D:
             np.array(slow_content) * self.v_slow + np.array(fast_content) * self.v_fast
         ) / (np.array(slow_content) + np.array(fast_content))
 
-        conc_root_mex5_slow = np.array(slow_content) / self.number
-        conc_root_mex5_fast = np.array(fast_content) / self.number
+        conc_root_mex6_slow = np.array(slow_content) / self.number
+        conc_root_mex6_fast = np.array(fast_content) / self.number
 
         # For ax_id_conc_root
         ax_id_conc_root = fig_root_based.add_subplot(2, 2, 2)
-        ax_id_conc_root.plot(xbins_line, conc_root_mex5_slow, "r", label="MEX-6 slow")
-        ax_id_conc_root.plot(xbins_line, conc_root_mex5_fast, "b", label="MEX-6 fast")
+        ax_id_conc_root.plot(xbins_line, conc_root_mex6_slow, "r", label="MEX-6 slow")
+        ax_id_conc_root.plot(xbins_line, conc_root_mex6_fast, "b", label="MEX-6 fast")
         ax_id_conc_root.set(
             title="MEX-6 concentr.,  Central voxel",
             ylabel="Concentr. MEX-6s , MEX-6f",
@@ -382,8 +382,8 @@ class Plot2D:
 
         return (
             ratio2.tolist(),
-            conc_root_mex5_slow.tolist(),
-            conc_root_mex5_fast.tolist(),
+            conc_root_mex6_slow.tolist(),
+            conc_root_mex6_fast.tolist(),
             v_average.tolist(),
         )
 
@@ -399,7 +399,7 @@ class Plot2D:
             container.append([plt.imshow(self.ims_movie1[i])])
         im_ani = animation.ArtistAnimation(fig, container, interval=50, blit=False)
         im_ani.save(
-            os.path.join(self.path, "2DMex5.html"), writer="imagemagick", fps=10, dpi=50
+            os.path.join(self.path, "2Dmex6.html"), writer="imagemagick", fps=10, dpi=50
         )
 
         fig2, a2x = plt.subplots()
