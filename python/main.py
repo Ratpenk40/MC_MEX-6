@@ -440,7 +440,7 @@ def main(argv):
             ID_list_mex6 = list(particle_family_mex6.GetID())
 
             ratio_mex6, concid0_mex6, concid1_mex6, vel_mex6 = plots_mex6.conc_calcCpp(
-                X_list, Y_list_mex6, Z_list_mex6, ID_list_mex6
+                X_list_mex6, Y_list_mex6, Z_list_mex6, ID_list_mex6
             )
 
         if plk1:
@@ -503,6 +503,9 @@ def main(argv):
             log_conc_id1_mex5.closeFile()
 
             if mex6:
+                plots_mex6.UpdateCpp(
+                    X_list_mex6, Y_list_mex6, Z_list_mex6, sliced, slice_depth
+                )
                 log_k_mex6.log_open_append()
                 log_profile_mex6.log_open_append()
                 log_mex6_ratio_slow_fast.log_open_append()
