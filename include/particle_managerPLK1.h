@@ -1,5 +1,5 @@
-#ifndef particle3D_manager_header
-#define particle3D_manager_header
+#ifndef particle3D_manager_PLK1_header
+#define particle3D_manager_PLK1_header
 
 #include<iostream>
 #include "particlePLK13D.h"

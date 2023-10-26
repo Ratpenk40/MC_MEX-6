@@ -8,4 +8,4 @@
  
 module load foss/2019b ROOT Boost/1.71.0 Boost.Python/1.71.0 matplotlib/3.1.1-Python-3.7.4   # load a specific software using module, for example Python
  
-srun python main.py -p 100000 --bound --plk1 --threeD --slice --settings settingsTemplate  # run your software 
+srun python main.py -p 100000 --bound --plk1 --threeD --slice --settings settingsTemplate.txt  # run your software 
